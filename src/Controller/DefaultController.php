@@ -12,6 +12,7 @@ class DefaultController extends AbstractController
 {
     /**
      * @Route("/default/", name="default_index")
+     * @return Response
      */
     public  function index(): Response
     {
@@ -19,4 +20,6 @@ class DefaultController extends AbstractController
             'message' => 'Bienvenue sur Wild series !',
         ]);
     }
+
+
 }
