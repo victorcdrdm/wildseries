@@ -1,19 +1,18 @@
 <?php
-
-
 namespace App\Controller;
-
-
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/programs", name="program_")
+ */
 
 class ProgramController extends AbstractController
 {
     /**
-     * @Route("/programs/", name="program_index")
+     * @Route("/", name="index")
      */
 
     public function index(): Response
@@ -24,7 +23,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/show/{page}/", requirements={"page"="\d+"}, methods={"GET"}, name="program_show")
+     * @Route("/{page}", requirements={"page"="\d+"}, methods={"GET"}, name="show")
      */
     public function show(int $page): Response
     {
