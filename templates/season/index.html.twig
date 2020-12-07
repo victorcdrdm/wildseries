@@ -1,4 +1,7 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}Hello SeasonController!{% endblock %}
+
 {% block body %}
     <h1>Toutes les séries de la table program : </h1>
     {% for program in programs %}
@@ -10,5 +13,4 @@
     {% else %}
         Aucune série trouvée.
     {% endfor %}
-
 {% endblock %}
