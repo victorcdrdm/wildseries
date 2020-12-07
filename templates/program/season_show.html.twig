@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="media">
-        <img class="align-self-start mr-0 mw-80 poster"  src="{{program.poster}}" alt="{{ program.title }} poster">
+        <img class="align-self-start mr-0 poster" style="width: 500px" src="{{program.poster}}" alt="{{ program.title }} poster">
         <div class="media-body">
             <h1 class="mt-0">Saison {{ season.number }} de {{ program.title }}</h1>
             <p>{{ season.description }}</p>
             <p>Année de sortie : {{ season.year }}</p>
             <p>Liste des épisodes :</p>
-            <ul>
-                {% for episod in episodes %}
-                    <li>
-                        Episode :{{ episod.number }} : {{ episod.title }}
-                    </li>
+            <li>
+                {% for episode in episodes %}
+                    <ul>
+                        Episode :{{ episode.number }} : {{ episode.title }}
+                        <a href="{{ path("program_episode_show", {program: program.id, season: season.id, episode: episode.id }) }}">liens vers l'episode</a>
+                    </ul>
+
                 {% endfor %}
-            </ul>
+            </li>
         </div>
     </div>
 

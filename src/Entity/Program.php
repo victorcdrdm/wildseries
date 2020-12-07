@@ -44,7 +44,7 @@ class Program
     /**
      * @ORM\OneToMany(targetEntity=Season::class, mappedBy="program")
      */
-    private $season;
+    private $seasons;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -60,13 +60,8 @@ class Program
 
     public function __construct()
     {
-        $this->number = new ArrayCollection();
+        $this->seasons = new ArrayCollection();
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="Program")
-     */
-
 
 
     public function getId(): ?int
@@ -127,13 +122,13 @@ class Program
      */
     public function getSeason(): Collection
     {
-        return $this->season;
+        return $this->seasons;
     }
 
     public function addSeason(Season $season): self
     {
-        if (!$this->season->contains($season)) {
-            $this->season[] = $season;
+        if (!$this->seasons->contains($season)) {
+            $this->seasons[] = $season;
             $season->setProgram($this);
         }
 
@@ -142,7 +137,7 @@ class Program
 
     public function removeSeason(Season $season): self
     {
-        if ($this->season->removeElement($season)) {
+        if ($this->seasons->removeElement($season)) {
             // set the owning side to null (unless already changed)
             if ($season->getProgram() === $this) {
                 $season->setProgram(null);
