@@ -15,13 +15,22 @@
                     <li>
                         {% for season in seasons %}
                         <ul>
-                            saison n=°{{ season.number }} - année de diffussion {{ season.year }}
+                            saison n=°{{ season.number }} - Année de diffusion {{ season.year }}
                             Résumer de la saison "{{ season.description }}"
-                            <a href="{{ path("program_season_show", {program: program.id, season: season.id }) }}">saison {{ season.number }}</a>
+                            <a href="{{ path("program_season_show", {slug: program.slug, season: season.id }) }}">saison {{ season.number }}</a>
                         </ul>
                         {% endfor %}
                     </li>
                 </div>
+                <strong>Acteurs :</strong>
+                <ul>
+                    {% for actor in program.actors %}
+                        <li>{{ actor.name }} </li>
+                        <a href="{{ path("actor_show", { actor: actor.id }) }}">Voir la fiche de l'acteur</a>
+                    {% else %}
+                        <li>Aucun acteur pour cette série</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
