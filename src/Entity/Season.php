@@ -84,7 +84,7 @@ class Season
         return $this->year;
     }
 
-    public function setYear(\DateTimeInterface $year): self
+    public function setYear(int $year): self
     {
         $this->year = $year;
 
