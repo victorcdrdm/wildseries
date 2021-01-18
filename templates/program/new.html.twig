@@ -1,8 +1,11 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <input type="submit" value="Add program">
-    {{ form_end(form) }}
+    <h1>Ajoute une nouvelle série</h1>
+    <div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Add program">
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

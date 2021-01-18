@@ -1,0 +1,12 @@
+{% extends 'baseMail.html.twig' %}
+
+
+    {% block body %}
+        <h1 style="color: #F4E5B7; text-align: center; margin-top: 70px"> Un nouveaux programme {% block title %}{{ program.title }}{% endblock%} a été ajouté</h1>
+        <div c1ass="text-contenaire" style="text-align: center; margin-top: 100px">
+            <p>Bonjour {{ program.title }} a été ajouté sur  Wild Series</p>
+            <p>Synopsys: {{program.summary }} </p>
+            <p>j'espère que ça va vous plaire </p>
+        </div>
+    {% endblock %}
+
