@@ -25,10 +25,33 @@
             </tr>
         </tbody>
     </table>
+    <div>
+        {% if app.user %}
+            <h3>Ajouter un commentaire</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn-form">Ajouter</button>
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
+
+    <div class="mt-5">
+        <h3>Vos commentaires</h3>
+        {% for comment in comments %}
+            <p class="mb-0">
+                {{ comment.author.email }} - rate : {{ comment.rate }} - Comment : {{ comment.comment }}
+            {% if is_granted("ROLE_ADMIN") or app.user == comment.author %}
+                {{ include('comment/_delete.html.twig') }}
+            {% endif %}
+            </p>
+        {% endfor %}
+
+    </div>
+
 
     <a href="{{ path('episode_index') }}">back to list</a>
 
-    <a href="{{ path('episode_edit', {'id': episode.id}) }}">edit</a>
+    <a href="{{ path('episode_edit', {'slug': episode.slug}) }}">edit</a>
 
     {{ include('episode/_delete_form.html.twig') }}
 {% endblock %}

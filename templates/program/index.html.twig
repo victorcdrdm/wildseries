@@ -10,6 +10,13 @@
     {% else %}
         Aucune série trouvée.
     {% endfor %}
+    <a class="link-return" href="{{ path('program_new') }}">
+        Ajouter une série
+    </a><br>
+
+    <a class="link-return" href="{{ path('default_index') }}">
+        Retour à l'accueil
+    </a>
 
 
 {% endblock %}

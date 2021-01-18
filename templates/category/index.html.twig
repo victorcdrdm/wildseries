@@ -1,7 +1,6 @@
 {% extends'base.html.twig' %}
 {% block body %}
     <h1>Toutes les category :</h1>
-        <h1>Toutes les catégories de la table category : </h1>
         {% for category in categories %}
             <div>
                 <ul>
@@ -12,8 +11,12 @@
             </div>
         {% else %}
             Aucune catégorie trouvée.
+
         <a href="{{ path('app_index') }}">
             Retour à l'accueil
         </a>
     {% endfor %}
+    <a href="{{ path('category_new') }}">
+        Crée une categories
+    </a>
 {% endblock %}

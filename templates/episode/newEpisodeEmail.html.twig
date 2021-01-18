@@ -1,0 +1,12 @@
+{% extends 'baseMail.html.twig' %}
+
+
+    {% block body %}
+        <h1 style="color: #F4E5B7; text-align: center; margin-top: 70px">Un nouvelle episode {{ episode.title }} a été ajouté</h1>
+        <div c1ass="text-contenaire" style="text-align: center; margin-top: 100px">
+            <p>Bonjour un nouvelle episode a été ajouté a {{ episode.season.program.title }} sur Wild Series</p>
+            <p>episode numéro: {{ episode.number }} de la saison numéro:{{ episode.season.number }}</p>
+            <p>Synopsys: {{ episode.synopsis }} </p>
+            <p>j'espère que ça va vous plaire </p>
+        </div>
+    {% endblock %}

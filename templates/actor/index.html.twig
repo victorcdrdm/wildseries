@@ -3,5 +3,18 @@
 {% block title %}Hello ActorController!{% endblock %}
 
 {% block body %}
-{{ dump(actor) }}
+    <h1>Tous les acteurs de la table actor : </h1>
+
+    {% for actor in actors %}
+        <div>
+            <p class="remove-margin margin-top">{{ loop.index }} / {{ actor.name }}</p>
+            <a href="{{ path("actor_show", { actor: actor.id }) }}">Voir sa filmographie</a>
+        </div>
+    {% else %}
+        Aucune acteur trouvé.
+    {% endfor %}
+
+    <a class="link-return" href="{{ path('program_index') }}">
+        Retour à l'accueil
+    </a>
 {% endblock %}

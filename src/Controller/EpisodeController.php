@@ -2,13 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Episode;
+use App\Form\CommentType;
 use App\Form\EpisodeType;
+use App\Entity\User;
 use App\Repository\EpisodeRepository;
 use App\Service\Slugify;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -29,19 +35,27 @@ class EpisodeController extends AbstractController
     /**
      * @Route("/new", name="episode_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Slugify $slugify): Response
+    public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
         $episode = new Episode();
         $form = $this->createForm(EpisodeType::class, $episode);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
             $slug = $slugify->generate($episode->getTitle());
             $episode->setSlug($slug);
-            $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($episode);
             $entityManager->flush();
 
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to('your_email@example.com')
+                ->subject('Un nouvelle episode viens d\'étre publiée')
+                ->html($this->renderView('episode/newEpisodeEmail.html.twig', ['episode' => $episode]));
+            $mailer->send($email);
             return $this->redirectToRoute('episode_index');
         }
 
@@ -52,19 +66,39 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="episode_show", methods={"GET"})
-     * @param Episode $episode
-     * @return Response
+     * @Route("/{slug}", name="episode_show", methods={"GET","POST"})
      */
-    public function show(Episode $episode): Response
+    public function show(Episode $episode, Request $request): Response
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        $comment->setEpisode($episode);
+        $author = $this->getUser();
+        $comment->setAuthor($author);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('episode_show',['slug' => $episode->getSlug()]);
+        }
+
+        $comments = $this->getDoctrine()->getRepository(Comment::class)
+            ->findBy(['episode' => $episode]);
+
         return $this->render('episode/show.html.twig', [
+            'comments' => $comments,
             'episode' => $episode,
+            'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="episode_edit", methods={"GET","POST"})
+     * @Route("/{slug}/edit", name="episode_edit", methods={"GET","POST"})
+     * @ParamConverter ("episode", class="App\Entity\Episode", options={"mapping": {"slug": "slug"}})
+     * @return Response
      */
     public function edit(Request $request, Episode $episode): Response
     {
